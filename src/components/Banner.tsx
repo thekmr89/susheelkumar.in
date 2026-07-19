@@ -1,24 +1,20 @@
 "use client";
 
-import { useState } from "react";
 import dynamic from "next/dynamic";
 import { portfolioData } from "@/data/portfolio";
-import { GithubIcon, LinkedinIcon, TwitterIcon, ResumeIcon, CallIcon, MailIcon, LocationIcon } from "@/components/Icons";
+import { ResumeIcon, CallIcon, MailIcon, LocationIcon, LoaderIcon } from "@/components/Icons";
 
 const Card = dynamic(() => import("@/components/Card"), {
   ssr: false,
+  loading: () => (
+    <div className="fixed inset-0 z-[99] flex items-center justify-center bg-white">
+      <LoaderIcon className="w-30 h-30 text-[#ffde00]" />
+    </div>
+  ),
 });
 
 export function Banner() {
   const { personalInfo } = portfolioData;
-  const [copied, setCopied] = useState(false);
-  const [activeTab, setActiveTab] = useState<"powers" | "projects" | "stats">("powers");
-
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(personalInfo.email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
-  };
 
   return (
     <section className="lg:min-h-screen pt-32 pb-20 flex items-center bg-comic-dots overflow-hidden">
@@ -37,7 +33,7 @@ export function Banner() {
           />
         </div>
       </div>
-      <div className="max-w-7xl lg:pt-0 pt-[25vh] mx-auto px-6 lg:px-12 relative z-10 w-full pointer-events-auto">
+      <div className="max-w-7xl lg:mt-0 mt-[25vh] mx-auto px-6 lg:px-12 relative z-10 w-full pointer-events-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           <div className="lg:col-span-7  m-[0_auto] lg:m-0 max-w-xl xl:max-w-2xl space-y-6 text-center lg:text-start pointer-events-auto">
             <div className="space-y-3">

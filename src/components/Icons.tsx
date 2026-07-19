@@ -1,62 +1,5 @@
 import React from "react";
 
-export function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="24"
-      height="24"
-      stroke="currentColor"
-      strokeWidth="2"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-      <path d="M9 18c-4.51 2-5-2-7-2" />
-    </svg>
-  );
-}
-
-export function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="24"
-      height="24"
-      stroke="currentColor"
-      strokeWidth="2"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-      <rect x="2" y="9" width="4" height="12" />
-      <circle cx="4" cy="4" r="2" />
-    </svg>
-  );
-}
-
-export function TwitterIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="24"
-      height="24"
-      stroke="currentColor"
-      strokeWidth="2"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
-    </svg>
-  );
-}
-
 export function ResumeIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -114,6 +57,37 @@ export function LocationIcon(props: React.SVGProps<SVGSVGElement>) {
       <path d="M0 0h24v24H0z" fill="none" />
       <path d="M8.75 10a3.25 3.25 0 1 1 6.5 0a3.25 3.25 0 0 1-6.5 0" />
       <path fillRule="evenodd" d="M3.774 8.877a8.04 8.04 0 0 1 8.01-7.377h.432a8.04 8.04 0 0 1 8.01 7.377a8.7 8.7 0 0 1-1.933 6.217L13.5 20.956a1.937 1.937 0 0 1-3 0l-4.792-5.862a8.7 8.7 0 0 1-1.934-6.217M12 5.25a4.75 4.75 0 1 0 0 9.5a4.75 4.75 0 0 0 0-9.5" clipRule="evenodd" />
+    </svg>
+  );
+}
+
+export function LoaderIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path d="M0 0h24v24H0z" fill="none" />
+      <path
+        fill="none"
+        stroke="#ffde00"
+        strokeLinecap="round"
+        strokeWidth="1"
+        d="M12 6.99998C9.1747 6.99987 6.99997 9.24998 7 12C7.00003 14.55 9.02119 17 12 17C14.7712 17 17 14.75 17 12"
+      >
+        <animateTransform
+          attributeName="transform"
+          attributeType="XML"
+          dur="560ms"
+          from="0,12,12"
+          repeatCount="indefinite"
+          to="360,12,12"
+          type="rotate"
+        />
+      </path>
     </svg>
   );
 }
