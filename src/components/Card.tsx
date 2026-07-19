@@ -82,11 +82,12 @@ export default function Lanyard({
     const isDesktop = windowWidth >= 1280;
 
     return (
-        <div className={className || "relative z-0 w-full h-full flex justify-center items-center transform scale-100 origin-center"}>
+        <div className={className || "relative z-0 w-full h-full flex justify-center items-center transform scale-100 origin-center touch-none select-none"}>
             <Canvas
                 camera={{ position, fov }}
                 dpr={[1, isBelow991 ? 1.5 : 2]}
                 gl={{ alpha: transparent }}
+                style={{ touchAction: 'none' }}
                 onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
             >
                 <ambientLight intensity={Math.PI} />
@@ -359,13 +360,21 @@ function Band({
                         onPointerOver={() => hover(true)}
                         onPointerOut={() => hover(false)}
                         onPointerUp={(e: ThreeEvent<PointerEvent>) => {
-                            (e.target as Element).releasePointerCapture(e.pointerId);
+                            try {
+                                (e.nativeEvent.target as HTMLElement)?.releasePointerCapture?.(e.pointerId);
+                            } catch {}
                             drag(false);
                             card.current?.wakeUp();
                         }}
                         onPointerDown={(e: ThreeEvent<PointerEvent>) => {
-                            (e.target as Element).setPointerCapture(e.pointerId);
+                            try {
+                                (e.nativeEvent.target as HTMLElement)?.setPointerCapture?.(e.pointerId);
+                            } catch {}
                             drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation())));
+                        }}
+                        onPointerCancel={() => {
+                            drag(false);
+                            card.current?.wakeUp();
                         }}
                     >
                         <mesh geometry={nodes.card.geometry}>

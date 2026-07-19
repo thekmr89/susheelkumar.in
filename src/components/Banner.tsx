@@ -19,7 +19,7 @@ export function Banner() {
   return (
     <section className="lg:min-h-screen pt-32 pb-20 flex items-center bg-comic-dots overflow-hidden">
       <div className="absolute top-[-30px] lg:top-0 right-0 h-[50vh] lg:h-full left-0 w-full pointer-events-none">
-        <div className="w-full h-full relative flex justify-center items-center pointer-events-auto">
+        <div className="w-full h-full relative flex justify-center items-center pointer-events-auto touch-none select-none">
           <Card
             position={[0, 0, 24]}
             gravity={[0, -25, 0]}
