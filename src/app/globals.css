@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fffdf5;
+  /* Bright warm cream comic background */
+  --foreground: #0f172a;
+  --comic-border: #000000;
+  --comic-yellow: #ffde00;
+  --comic-pink: #ff2a85;
+  --comic-cyan: #00f0ff;
+  --comic-lime: #00e676;
+  --dot-color: rgba(0, 0, 0, 0.08);
+}
+
+body {
+  background-color: #fffdf5 !important;
+  color: #0f172a !important;
+  overflow-x: hidden;
+}
+
+.font-playwrite {
+  font-family: var(--font-playwrite);
+}
+
+.font-mona-sans {
+  font-family: var(--font-mona-sans);
+}
+
+/* Comic Halftone Polka Dot Pattern */
+.bg-comic-dots {
+  background-color: #fffdf5;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.08) 2.5px, transparent 2.5px);
+  background-size: 24px 24px;
+}
+
+/* Neo-Brutalist / Comic Box with Hard Black Offset Shadow */
+.comic-box {
+  border: 3.5px solid #000000;
+  box-shadow: 6px 6px 0px 0px #000000;
+  background-color: #ffffff;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.comic-btn {
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px 0px #000000;
+  font-family: var(--font-fredoka), sans-serif;
+  font-weight: 700;
+  transition: all 0.15s ease;
+}
+
+.comic-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #000000;
+}
+
+.comic-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px #000000;
+}
+
+/* Speech Bubble Triangular Tail */
+.speech-bubble-tail {
+  position: relative;
+}
+
+.speech-bubble-tail::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 24px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 12px solid #000000;
+}
+
+.speech-bubble-tail::before {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 26px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid #ffde00;
+  z-index: 1;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fffdf5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffde00;
+  border: 2px solid #000;
+  border-radius: 4px;
+}
