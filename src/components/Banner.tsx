@@ -18,14 +18,14 @@ export function Banner() {
 
   return (
     <section className="lg:min-h-screen pt-32 pb-20 flex items-center bg-comic-dots overflow-hidden">
-      <div className="absolute top-[-30px] lg:top-0 right-0 h-[50vh] lg:h-full left-0 w-full pointer-events-none">
-        <div className="w-full h-full relative flex justify-center items-center pointer-events-auto touch-none select-none">
+      <div className="absolute top-[-30px] lg:top-0 right-0 h-[50vh] lg:h-full left-0 w-full">
+        <div className="w-full h-full relative flex justify-center items-center">
           <Card
             position={[0, 0, 24]}
             gravity={[0, -25, 0]}
             fov={14}
             cardX={3.2}
-            cardY={4.5}
+            cardY={4.7}
             frontImage="/susheel.jpg"
             lanyardImage="/lanyard.jpg"
             imageFit="cover"
@@ -33,7 +33,7 @@ export function Banner() {
           />
         </div>
       </div>
-      <div className="max-w-7xl lg:mt-0 mt-[25vh] mx-auto px-6 lg:px-12 relative z-10 w-full pointer-events-auto">
+      <div className="max-w-7xl lg:mt-0 mt-[25vh] mx-auto px-6 lg:px-12 relative z-10 w-full pointer-events-none">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           <div className="lg:col-span-7  m-[0_auto] lg:m-0 max-w-xl xl:max-w-2xl space-y-6 text-center lg:text-start pointer-events-auto">
             <div className="space-y-3">
