@@ -29,7 +29,7 @@ body {
 /* Comic Halftone Polka Dot Pattern */
 .bg-comic-dots {
   background-color: #fffdf5;
-  background-image: radial-gradient(rgba(0, 0, 0, 0.08) 2.5px, transparent 2.5px);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.08) 2px, transparent 2px);
   background-size: 24px 24px;
 }
 

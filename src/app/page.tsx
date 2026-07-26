@@ -6,8 +6,8 @@ export default function Home() {
     <main className="min-h-screen bg-[#fffdf5] text-slate-900 transition-colors duration-300">
       <ClickSpark
         sparkColor="#ffde00"
-        sparkSize={15}
-        sparkRadius={28}
+        sparkSize={25}
+        sparkRadius={38}
         sparkCount={12}
         duration={400}
       >

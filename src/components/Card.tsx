@@ -263,6 +263,28 @@ function Band({
     const [dragged, drag] = useState<false | THREE.Vector3>(false);
     const [hovered, hover] = useState(false);
 
+    // Track whether the pointer has moved recently — this lets us distinguish
+    // a genuine user hover from the card swinging into the pointer ray via physics.
+    const pointerMovedRef = useRef(false);
+    const pointerMoveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => {
+        const onMove = () => {
+            pointerMovedRef.current = true;
+            if (pointerMoveTimerRef.current) clearTimeout(pointerMoveTimerRef.current);
+            // Reset the flag after a short idle window — if the pointer hasn't moved
+            // for 150ms, the next onPointerOver is likely physics-driven.
+            pointerMoveTimerRef.current = setTimeout(() => {
+                pointerMovedRef.current = false;
+            }, 150);
+        };
+        window.addEventListener('pointermove', onMove);
+        return () => {
+            window.removeEventListener('pointermove', onMove);
+            if (pointerMoveTimerRef.current) clearTimeout(pointerMoveTimerRef.current);
+        };
+    }, []);
+
     let xPos = 0;
     let cardScale = 2.25;
     let colliderArgs: [number, number, number] = [0.8, 1.125, 0.01];
@@ -301,6 +323,19 @@ function Band({
             };
         }
     }, [hovered, dragged]);
+
+    // Safety net: if the pointer is released anywhere (even outside the canvas),
+    // always clear the drag state so it never gets stuck.
+    useEffect(() => {
+        const onPointerUp = () => {
+            if (dragged) {
+                drag(false);
+                card.current?.wakeUp();
+            }
+        };
+        window.addEventListener('pointerup', onPointerUp);
+        return () => window.removeEventListener('pointerup', onPointerUp);
+    }, [dragged]);
 
     useFrame((state, delta) => {
         if (dragged && typeof dragged !== 'boolean') {
@@ -357,7 +392,11 @@ function Band({
                     <group
                         scale={cardScale}
                         position={[0, groupOffsetY, -0.05]}
-                        onPointerOver={() => hover(true)}
+                        onPointerOver={() => {
+                            // Only show the grab cursor when the user actually moved
+                            // the pointer over the card — ignore physics-driven hits.
+                            if (pointerMovedRef.current || dragged) hover(true);
+                        }}
                         onPointerOut={() => hover(false)}
                         onPointerUp={(e: ThreeEvent<PointerEvent>) => {
                             try {
