@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 'use client';
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, extend, useFrame, type ThreeElement, type ThreeEvent } from '@react-three/fiber';
 import { useGLTF, useTexture, Environment, Lightformer } from '@react-three/drei';
 import {
@@ -70,6 +70,7 @@ export default function Lanyard({
     cardY = 4.8
 }: LanyardProps) {
     const [windowWidth, setWindowWidth] = useState<number>(() => typeof window !== 'undefined' ? window.innerWidth : 1200);
+    const [webglCrashed, setWebglCrashed] = useState(false);
 
     useEffect(() => {
         const handleResize = (): void => setWindowWidth(window.innerWidth);
@@ -81,14 +82,55 @@ export default function Lanyard({
     const isSmallLaptop = windowWidth >= 991 && windowWidth < 1280;
     const isDesktop = windowWidth >= 1280;
 
+    // Handle WebGL context loss — show a static fallback on mobile crash
+    const handleCreated = useCallback(({ gl }: { gl: THREE.WebGLRenderer }) => {
+        gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1);
+        const canvas = gl.domElement;
+        canvas.addEventListener('webglcontextlost', (e) => {
+            e.preventDefault();
+            setWebglCrashed(true);
+        });
+    }, [transparent]);
+
+    // Static fallback when WebGL crashes on mobile
+    if (webglCrashed) {
+        return (
+            <div className={className || "relative z-0 w-full h-full flex justify-center items-center"}>
+                <div style={{
+                    width: 220,
+                    background: '#fff',
+                    borderRadius: 16,
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                    padding: 12,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 8,
+                }}>
+                    {frontImage && (
+                        <img
+                            src={frontImage}
+                            alt="Card"
+                            style={{ width: '100%', borderRadius: 10, objectFit: 'cover', aspectRatio: '3/4' }}
+                        />
+                    )}
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className={className || "relative z-0 w-full h-full flex justify-center items-center transform scale-100 origin-center touch-none select-none"}>
             <Canvas
                 camera={{ position, fov }}
-                dpr={[1, isBelow991 ? 1.5 : 2]}
-                gl={{ alpha: transparent }}
+                dpr={isBelow991 ? [1, 1] : [1, 2]}
+                gl={{
+                    alpha: transparent,
+                    powerPreference: isBelow991 ? 'low-power' : 'high-performance',
+                    antialias: !isBelow991,
+                }}
                 style={{ touchAction: 'none' }}
-                onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
+                onCreated={handleCreated}
             >
                 <ambientLight intensity={Math.PI} />
                 <Suspense fallback={null}>
@@ -115,20 +157,24 @@ export default function Lanyard({
                         rotation={[0, 0, Math.PI / 3]}
                         scale={[100, 0.1, 1]}
                     />
-                    <Lightformer
-                        intensity={3}
-                        color="white"
-                        position={[-1, -1, 1]}
-                        rotation={[0, 0, Math.PI / 3]}
-                        scale={[100, 0.1, 1]}
-                    />
-                    <Lightformer
-                        intensity={3}
-                        color="white"
-                        position={[1, 1, 1]}
-                        rotation={[0, 0, Math.PI / 3]}
-                        scale={[100, 0.1, 1]}
-                    />
+                    {!isBelow991 && (
+                        <>
+                            <Lightformer
+                                intensity={3}
+                                color="white"
+                                position={[-1, -1, 1]}
+                                rotation={[0, 0, Math.PI / 3]}
+                                scale={[100, 0.1, 1]}
+                            />
+                            <Lightformer
+                                intensity={3}
+                                color="white"
+                                position={[1, 1, 1]}
+                                rotation={[0, 0, Math.PI / 3]}
+                                scale={[100, 0.1, 1]}
+                            />
+                        </>
+                    )}
                     <Lightformer
                         intensity={10}
                         color="white"
@@ -417,14 +463,22 @@ function Band({
                         }}
                     >
                         <mesh geometry={nodes.card.geometry}>
-                            <meshPhysicalMaterial
-                                map={cardMap}
-                                map-anisotropy={16}
-                                clearcoat={isBelow991 ? 0 : 1}
-                                clearcoatRoughness={0.15}
-                                roughness={0.9}
-                                metalness={0.8}
-                            />
+                            {isBelow991 ? (
+                                <meshStandardMaterial
+                                    map={cardMap}
+                                    roughness={0.9}
+                                    metalness={0.6}
+                                />
+                            ) : (
+                                <meshPhysicalMaterial
+                                    map={cardMap}
+                                    map-anisotropy={16}
+                                    clearcoat={1}
+                                    clearcoatRoughness={0.15}
+                                    roughness={0.9}
+                                    metalness={0.8}
+                                />
+                            )}
                         </mesh>
                         <mesh geometry={nodes.clip.geometry} material={materials.metal} material-roughness={0.3} />
                         <mesh geometry={nodes.clamp.geometry} material={materials.metal} />

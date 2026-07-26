@@ -39,7 +39,7 @@ export function Banner() {
           <div className="lg:col-span-7  m-[0_auto] lg:m-0 max-w-xl xl:max-w-2xl space-y-6 text-center lg:text-start ">
             <div className="space-y-3">
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-playwrite font-semibold tracking-tight text-black leading-[1.4]">
-                <span className="text-2xl lg:text-4xl lg:text-5xl">Hello, folks!</span> <br />
+                <span className="text-2xl lg:text-3xl lg:text-4xl">Hello, folks!</span> <br />
                 I am Susheel
               </h1>
             </div>
