@@ -123,18 +123,18 @@ export default function Lanyard({
         <div className={className || "relative z-0 w-full h-full flex justify-center items-center transform scale-100 origin-center touch-none select-none"}>
             <Canvas
                 camera={{ position, fov }}
-                dpr={isBelow991 ? [1, 1] : [1, 2]}
+                dpr={[1, 2]}
                 gl={{
                     alpha: transparent,
-                    powerPreference: isBelow991 ? 'low-power' : 'high-performance',
-                    antialias: !isBelow991,
+                    powerPreference: 'high-performance',
+                    antialias: true,
                 }}
                 style={{ touchAction: 'none' }}
                 onCreated={handleCreated}
             >
                 <ambientLight intensity={Math.PI} />
                 <Suspense fallback={null}>
-                    <Physics gravity={gravity} timeStep={isBelow991 ? 1 / 30 : 1 / 60}>
+                    <Physics gravity={gravity} timeStep={1 / 60}>
                         <Band
                             isBelow991={isBelow991}
                             isSmallLaptop={isSmallLaptop}
@@ -157,24 +157,20 @@ export default function Lanyard({
                         rotation={[0, 0, Math.PI / 3]}
                         scale={[100, 0.1, 1]}
                     />
-                    {!isBelow991 && (
-                        <>
-                            <Lightformer
-                                intensity={3}
-                                color="white"
-                                position={[-1, -1, 1]}
-                                rotation={[0, 0, Math.PI / 3]}
-                                scale={[100, 0.1, 1]}
-                            />
-                            <Lightformer
-                                intensity={3}
-                                color="white"
-                                position={[1, 1, 1]}
-                                rotation={[0, 0, Math.PI / 3]}
-                                scale={[100, 0.1, 1]}
-                            />
-                        </>
-                    )}
+                    <Lightformer
+                        intensity={3}
+                        color="white"
+                        position={[-1, -1, 1]}
+                        rotation={[0, 0, Math.PI / 3]}
+                        scale={[100, 0.1, 1]}
+                    />
+                    <Lightformer
+                        intensity={3}
+                        color="white"
+                        position={[1, 1, 1]}
+                        rotation={[0, 0, Math.PI / 3]}
+                        scale={[100, 0.1, 1]}
+                    />
                     <Lightformer
                         intensity={10}
                         color="white"
@@ -337,8 +333,8 @@ function Band({
 
     if (isBelow991) {
         xPos = 0;
-        cardScale = 2.6;
-        colliderArgs = [0.92, 1.3, 0.01];
+        cardScale = 3.3;
+        colliderArgs = [1.18, 1.65, 0.01];
     } else if (isSmallLaptop) {
         xPos = cardX * 0.55;
         cardScale = 2.45;
@@ -405,7 +401,7 @@ function Band({
             curve.points[1].copy(getLerped(j2.current));
             curve.points[2].copy(getLerped(j1.current));
             curve.points[3].copy(fixed.current.translation());
-            band.current.geometry.setPoints(curve.getPoints(isBelow991 ? 16 : 32));
+            band.current.geometry.setPoints(curve.getPoints(32));
             ang.copy(card.current.angvel());
             rot.copy(card.current.rotation());
             card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z }, true);
@@ -463,22 +459,14 @@ function Band({
                         }}
                     >
                         <mesh geometry={nodes.card.geometry}>
-                            {isBelow991 ? (
-                                <meshStandardMaterial
-                                    map={cardMap}
-                                    roughness={0.9}
-                                    metalness={0.6}
-                                />
-                            ) : (
-                                <meshPhysicalMaterial
-                                    map={cardMap}
-                                    map-anisotropy={16}
-                                    clearcoat={1}
-                                    clearcoatRoughness={0.15}
-                                    roughness={0.9}
-                                    metalness={0.8}
-                                />
-                            )}
+                            <meshPhysicalMaterial
+                                map={cardMap}
+                                map-anisotropy={16}
+                                clearcoat={1}
+                                clearcoatRoughness={0.15}
+                                roughness={0.9}
+                                metalness={0.8}
+                            />
                         </mesh>
                         <mesh geometry={nodes.clip.geometry} material={materials.metal} material-roughness={0.3} />
                         <mesh geometry={nodes.clamp.geometry} material={materials.metal} />
@@ -491,7 +479,7 @@ function Band({
                 <meshLineMaterial
                     color="white"
                     depthTest={false}
-                    resolution={isBelow991 ? [1000, 2000] : [1000, 1000]}
+                    resolution={[1000, 1000]}
                     useMap={1}
                     map={texture}
                     repeat={[-4, 1]}
