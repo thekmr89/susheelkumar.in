@@ -30,7 +30,7 @@ body {
 .bg-comic-dots {
   background-color: #fffdf5;
   background-image: radial-gradient(rgba(0, 0, 0, 0.08) 2px, transparent 2px);
-  background-size: 24px 24px;
+  background-size: 15px 15px;
 }
 
 /* Neo-Brutalist / Comic Box with Hard Black Offset Shadow */
